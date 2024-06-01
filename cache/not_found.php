@@ -1,3 +1,4 @@
+<?php class_exists('app\core\Template') or exit; ?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>

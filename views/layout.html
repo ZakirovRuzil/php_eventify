@@ -3,15 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>{% yield title %}</title>
-    <style> {%block styles %}
-        table, th, td {
-            border: 1px solid;
-        }
-    {% endblock %}
+    <link rel="stylesheet" href="/views/css/style.css">
     {% yield styles %}
-    </style>
 </head>
 <body>
- {% yield content %}
+<header>
+    <div class="navbar">
+        <a href="/main">Главная</a>
+        <a href="/create">Создать</a>
+        <a href="/profile">Профиль</a>
+        <a href="/logout">Выйти</a>
+    </div>
+</header>
+<main>
+    {% yield content %}
+</main>
 </body>
 </html>

@@ -1,0 +1,42 @@
+{% include 'layout.html' %}
+
+{% block styles %}
+<link rel="stylesheet" href="/views/css/refactor_event.css">
+{% endblock %}
+
+{% block title %}Создать событие{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <h1>Создать событие</h1>
+        <?php if (!empty($error)): ?>
+        <p style="color:red"><?= $error ?></p>
+        <?php endif; ?>
+        <form action="/create" method="POST">
+            <label>Название:
+                <input type="text" name="name" required>
+            </label>
+            <label>Короткое описание:
+                <input type="text" name="short_description" required>
+            </label>
+            <label>Длинное описание:
+                <textarea name="long_description" required></textarea>
+            </label>
+            <label>Место:
+                <input type="text" name="place" required>
+            </label>
+            <label>Дата:
+                <input type="date" name="date" required>
+            </label>
+            <label>Время:
+                <input type="time" name="time" required>
+            </label>
+            <label>Изображение (URL):
+                <input type="text" name="image" required>
+            </label>
+            <button type="submit">Создать</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,68 @@
+.card {
+    text-align: center;
+}
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+label {
+    display: block;
+    text-align: left;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #555;
+}
+input[type="text"],
+input[type="date"],
+input[type="time"],
+input[type="password"],
+input[type="email"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+textarea {
+    resize: none;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #749eeb;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+button:hover {
+    background-color: #526de7;
+}
+.error {
+    color: red;
+    margin-bottom: 20px;
+}
+.cancel-button {
+    display: block;
+    padding: 10px;
+    background-color: #ccc;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 10px;
+}
+.cancel-button:hover {
+    background-color: #999;
+}

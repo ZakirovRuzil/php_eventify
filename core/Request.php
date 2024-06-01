@@ -6,9 +6,10 @@ namespace app\core;
 
 class Request
 {
-
     public const GET = "GET";
     public const POST = "POST";
+
+    public array $params = [];
 
     public function getUri(): string
     {

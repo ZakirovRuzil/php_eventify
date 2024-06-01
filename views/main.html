@@ -1,0 +1,55 @@
+{% include 'layout.html' %}
+
+{% block title %}Главная страница{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form id="search-form" method="POST" action="/search">
+        <input type="text" name="query" placeholder="Поиск" value="<?= isset($query) ? htmlspecialchars($query) : '' ?>">
+        <button type="submit">Поиск</button>
+    </form>
+    <div id="events" class="events-container">
+        <?php if (isset($events) && $events instanceof \app\core\Collection && count($events) > 0): ?>
+        <?php foreach ($events->getNextRow() as $event): ?>
+        <div class="event" onclick="window.location='/event/<?= $event->getId() ?>'">
+            <h2><?= htmlspecialchars($event->getName()) ?></h2>
+            <img src="<?= htmlspecialchars($event->getImage()) ?>" alt="<?= htmlspecialchars($event->getName()) ?>">
+            <p><?= htmlspecialchars($event->getShortDescription()) ?></p>
+            <p>Дата: <?= date('d.m.Y', strtotime($event->getDate())) ?> Время: <?= date('H:i', strtotime($event->getTime())) ?></p>
+        </div>
+        <?php endforeach; ?>
+        <?php else: ?>
+        <p>Мероприятий не найдено</p>
+        <?php endif; ?>
+    </div>
+</div>
+{% endblock %}
+
+<!--{% block script %}-->
+<!--<script>-->
+<!--    document.getElementById('load-more').addEventListener('click', function() {-->
+<!--        const offset = document.querySelectorAll('.event').length;-->
+<!--        fetch('/load-more', {-->
+<!--            method: 'POST',-->
+<!--            headers: {'Content-Type': 'application/x-www-form-urlencoded'},-->
+<!--            body: 'offset=' + offset-->
+<!--        }).then(response => response.json())-->
+<!--            .then(events => {-->
+<!--                const eventsDiv = document.getElementById('events');-->
+<!--                events.forEach(event => {-->
+<!--                    const eventDiv = document.createElement('a');-->
+<!--                    eventDiv.className = 'event';-->
+<!--                    eventDiv.href = `/event/${event.id}`;-->
+<!--                    eventDiv.innerHTML = `-->
+<!--                        <h2>${event.name}</h2>-->
+<!--                        <p>${event.short_description}</p>-->
+<!--                        <p>Дата: ${event.date} Время: ${event.time}</p>-->
+<!--                        <img src="${event.image}" alt="${event.name}" style="max-width:100px;">-->
+<!--                    `;-->
+<!--                    eventsDiv.appendChild(eventDiv);-->
+<!--                });-->
+<!--            });-->
+<!--    });-->
+<!--</script>-->
+<!--{% endblock %}-->
+

@@ -1,6 +1,9 @@
 <?php
 
-use app\controllers\MainController;
+use app\controllers\AuthController;
+use app\controllers\EventController;
+use app\controllers\ErrorController;
+use app\controllers\UserController;
 use app\core\Application;
 use app\core\ConfigParser;
 use app\core\Request;
@@ -26,22 +29,54 @@ if ($app_env=="dev") {
     ini_set("error_log", PROJECT_DIR."/runtime/logs/".getenv("PHP_LOG"));
 }
 
-$application = new Application();
+
 //$router = $application->getRouter();
 
 
 try {
-    $application->setRoute(Request::GET, "/", [new MainController(), "getView"]);
-    $application->setRoute(Request::GET, "/500err", "");
+    $application = new Application();
 
-    $application->setRoute(Request::POST, "/handle", [new MainController(), "handleView"]);
+    $application->setRoute(Request::GET, "/", [new AuthController(), "register"]);
+    $application->setRoute(Request::POST, "/register", [new AuthController(), "handleRegister"]);
+    $application->setRoute(Request::GET, "/login", [new AuthController(), "login"]);
+    $application->setRoute(Request::POST, "/login", [new AuthController(), "handleLogin"]);
+    $application->setRoute(Request::GET, "/logout", [new AuthController(), "logout"]);
+
+    $application->setRoute(Request::GET, "/main", [new EventController(), "mainPage"]);
+    $application->setRoute(Request::POST, "/search", [new EventController(), "searchEvents"]);
+    $application->setRoute(Request::POST, "/load-more", [new EventController(), "loadMoreEvents"]);
+    $application->setRoute(Request::GET, "/create", [new EventController(), "createPage"]);
+    $application->setRoute(Request::POST, "/create", [new EventController(), "handleCreate"]);
+
+    $application->setRoute(Request::GET, "/event/{id}", [new EventController(), "viewEvent"]);
+    $application->setRoute(Request::GET, "/event/{id}/edit", [new EventController(), "showEditPage"]);
+    $application->setRoute(Request::POST, "/event/{id}/edit", [new EventController(), "handleEdit"]);
+    $application->setRoute(Request::POST, "/event/{id}/delete", [new EventController(), "handleDelete"]);
+    $application->setRoute(Request::POST, "/event/{id}/comment", [new EventController(), "handleComment"]);
+    $application->setRoute(Request::POST, "/event/{id}/join", [new EventController(), "handleJoin"]);
+    $application->setRoute(Request::POST, "/event/{id}/leave", [new EventController(), "handleLeave"]);
+
+    $application->setRoute(Request::GET, "/profile", [new UserController(), "profilePage"]);
+
+    $application->setRoute(Request::GET, "/404", [new ErrorController(), "notFound"]);
+
+    $application->run();
 } catch (RouteException $e) {
-    //log
+    // логирование ошибки
     exit;
 }
+//} catch (RouteException $e) {
+//    echo "Route error: " . $e->getMessage();
+//    // Перенаправление на 404
+//    header("Location: /404");
+//} catch (\Exception $e) {
+//    echo "Generic error: " . $e->getMessage();
+//    // Перенаправление на 404
+//    header("Location: /404");
+//}
 
 
 
-ob_start();
-$application->run();
-ob_flush();
+//ob_start();
+//
+//ob_flush();

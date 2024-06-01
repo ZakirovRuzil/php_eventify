@@ -28,6 +28,8 @@ class MainController
            $mapper->Insert($user);
            $users = $mapper->SelectAll();
 
+
+//           Application::$app -> getLogger() -> debug(json_encode($users[0]));
         } catch (\Exception $e) {
             Application::$app->getLogger()->error($e);
             Application::$app->getResponse()->setStatusCode(Response::HTTP_SERVER_ERROR);
@@ -36,8 +38,4 @@ class MainController
 
        Application::$app->getRouter()->renderTemplate("success.html", ["users"=>$users]);
     }
-
-
-
-
 }

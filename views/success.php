@@ -20,7 +20,6 @@
         <th>Имя</th>
         <th>Фамилия</th>
         <th>Возраст</th>
-        <th>Работа</th>
         <th>E-Mail</th>
         <th>Телефон</th>
     </tr>
@@ -42,7 +41,6 @@
             <td><?= $user->getFirstName() ?></td>
             <td><?= $user->getSecondName() ?></td>
             <td><?= $user->getAge() ?></td>
-            <td><?= $user->getJob() ?></td>
             <td><?= $user->getEmail() ?></td>
             <td><?= $user->getPhone() ?></td>
 

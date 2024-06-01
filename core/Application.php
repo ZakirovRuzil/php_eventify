@@ -76,6 +76,13 @@ class Application
 
     public function run(): void
     {
+        session_start();
+
+        $protectedRoutes = ['/main', '/event', '/create', '/profile'];
+        if (in_array($this->request->getUri(), $protectedRoutes) && !isset($_SESSION['user'])) {
+            $this->router->renderTemplate("register.html", ["error" => "Please register or login first"]);
+            return;
+        }
 
         try {
             $this->router->resolve();

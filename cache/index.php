@@ -4,6 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Введите данные</title>
+    <style> 
+    
+        table, th, td {
+            border: 1px solid;
+        }
+    
+    </style>
 </head>
 <body>
  

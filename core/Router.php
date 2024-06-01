@@ -8,8 +8,7 @@ use app\exceptions\RouteException;
 
 class Router
 {
-
-    private $routes;
+    private array $routes;
     private Request $request;
     private Response $response;
 
@@ -30,28 +29,34 @@ class Router
         $this->routes[Request::POST][$path] = $callback;
     }
 
-    /**
-     * @throws \Exception
-     */
     public function resolve(): void
     {
         $method = $this->request->getMethod();
-        $path = $this->request->getUri();
-        if (!isset($this->routes[$method][$path])) {
+        $uri = $this->request->getUri();
+        $path = parse_url($uri, PHP_URL_PATH);
+
+        $callback = null;
+
+        foreach ($this->routes[$method] as $route => $handler) {
+            $routePattern = preg_replace('/\{([a-zA-Z0-9_]+)\}/', '([^/]+)', $route);
+            if (preg_match('@^' . $routePattern . '$@', $path, $matches)) {
+                $callback = $handler;
+                array_shift($matches); // Удалить первый элемент ($matches[0])
+                $this->request->params = $matches; // Сохранить параметры запроса
+                break;
+            }
+        }
+
+        if (!$callback) {
             $this->response->setStatusCode(Response::HTTP_NOT_FOUND);
             $this->renderStatic("404.html");
             return;
         }
-        $callback = $this->routes[$method][$path];
-        if (empty($callback)) {
-            $this->response->setStatusCode(Response::HTTP_SERVER_ERROR);
-            Application::$app->getLogger()->error("Router: Callback not found");
-            throw new RouteException(route: $path, method: $method, message: "Callback not found");
-        }
+
         if (is_string($callback)) {
             $this->renderView($callback);
         } else {
-            call_user_func($callback, $this->request);
+            call_user_func_array($callback, array_merge([$this->request], $this->request->params));
         }
     }
 
@@ -60,12 +65,10 @@ class Router
         require PROJECT_DIR . "/web/" . $name;
     }
 
-
     public function renderView(string $name, array $context = []): void
     {
         require PROJECT_DIR . "/views/" . $name . ".php";
     }
-
 
     public function renderTemplate(string $name, array $context = []): void
     {

@@ -4,24 +4,20 @@ declare(strict_types=1);
 
 namespace app\core;
 
-class Collection
+class Collection implements \Countable
 {
-   private array $rows;
-   private int $count;
-
-   private array $objects = [];
-
-   private Mapper $mapper;
+    private array $rows;
+    private int $count;
+    private array $objects = [];
+    private Mapper $mapper;
 
     /**
      * @param array $rows
-     * @param int $count
      * @param Mapper $mapper
      */
     public function __construct(array $rows, Mapper $mapper)
     {
         $this->rows = $rows;
-
         $this->count = count($rows);
         $this->mapper = $mapper;
     }
@@ -37,14 +33,15 @@ class Collection
         return $this->objects[$i];
     }
 
-    public function getNextRow(): \Generator{
-        for ($i=0; $i<$this->count; $i++) {
+    public function getNextRow(): \Generator
+    {
+        for ($i = 0; $i < $this->count; $i++) {
             yield $this->getRow($i);
         }
     }
 
-
-
-
-
+    public function count(): int
+    {
+        return $this->count;
+    }
 }
